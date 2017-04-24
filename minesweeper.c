@@ -101,31 +101,26 @@ int main(int argc, char *argv[])
     int row, col, value, rows[8], columns[8];
 
 new_game:
-    // the number of mines
-    num_of_mines = 10;
-    if(argc == 2) {
-        num_of_mines = atoi(argv[1]);
-    }
-    srand (time(NULL));						// random seed
-    // setting cursor
+    num_of_mines = 10; // the number of mines
+    if(argc == 2)
+        num_of_mines = atoi(argv[1]);  
+    srand (time(NULL)); // random seed
+    /* setting cursor */
     x = 0;
     y = 0;
-    // set all cells to 0
+    /* set all cells to 0 */
     for(int i = 0; i < 10; i++)
         for(int j = 0; j < 10; j++)
             table_array[i][j] = 0;
 
     for(i = 0; i < num_of_mines; i++) {
         /* initialize random seed: */
-
-        row = rand() % 10;					// it generates a integer in the range 0 to 9
+        row = rand() % 10; // it generates a integer in the range 0 to 9
         col = rand() % 10;
-
-        // put mines
+        /* put mines */
         if(table_array[row][col] != 99) {
             table_array[row][col] = 99;
-
-            // Get position of adjacent cells of current cell
+            /* Get position of adjacent cells of current cell */
             rows[0] = row - 1;	columns[0] = col + 1;
             rows[1] = row;	columns[1] = col + 1;
             rows[2] = row + 1;	columns[2] = col + 1;
@@ -137,24 +132,23 @@ new_game:
 
             for(j = 0; j < 8; j++) {
                 value = table_array[rows[j]][columns[j]];
-                if( (rows[j] >= 0 && rows[j] < MAX) && (columns[j] >= 0 && columns[j] < MAX) ) {	// to prevent negative index and out of bounds
-                    if(value != 99)																// to prevent remove mines
-                        table_array[rows[j]][columns[j]] += 1;									// sums 1 to each adjacent cell
+                if( (rows[j] >= 0 && rows[j] < MAX) && (columns[j] >= 0 && columns[j] < MAX) ) {
+		// to prevent negative index and out of bounds
+                    if(value != 99) // to prevent remove mines
+                        table_array[rows[j]][columns[j]] += 1; // sums 1 to each adjacent cell
                 }
             }
-
-        } else {							// to make sure that there are the properly number of mines in table
+        } else {
+	// to make sure that there are the properly number of mines in table
             i--;
             continue;
         }
     }
-
-    //
-    while(num_of_mines != 0) {			// when num_of_mines becomes 0 you will win the game
+    
+    while(num_of_mines != 0) {
+	// when num_of_mines becomes 0 you will win the game
         print_table();
-
-        key_input = getch();
-        // cursor direction
+        key_input = getch(); // cursor direction
         char direction;
         switch (key_input) {
 
