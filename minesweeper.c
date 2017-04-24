@@ -243,25 +243,22 @@ end_of_game:
     printf("\nGAME OVER\n");
 
     if(num_of_mines == 0)
-        printf("you won!!!!\n");
+        printf("YOU WIN!!!!\n");
 
     else
-        printf("BOOM! you LOOSE!\n");
+        printf("BOOM! YOU LOSE!\n");
 
     do {
         printf("Are you sure to exit? (y or n)? ");
         key_input = getch();
         putchar('\n');
-        if(key_input == 'y' || key_input == 'Y') {
+        if(key_input == 'y' || key_input == 'Y')
             break;
-        } else if(key_input == 'n' || key_input == 'N') {
+        else if(key_input == 'n' || key_input == 'N')
             goto new_game;
-        }
         printf("Please answer y or n\n");
     } while(1);
     printf("See you next time!\n");
-
     fflush(stdin);
-
     return 0;
 }
