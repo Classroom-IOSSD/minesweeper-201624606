@@ -96,53 +96,44 @@ void print_table()
 
 int main(int argc, char *argv[])
 {
-
-    char ch;
-    int nMines; // the number of the remaining mines
-    int i,j,r,c,value, rows[8], columns[8];
+    char key_input;
+    int num_of_mines; // the number of the remaining mines
+    int row, col, value, rows[8], columns[8];
 
 new_game:
     // the number of mines
-    nMines = 10;
+    num_of_mines = 10;
     if(argc == 2) {
-        nMines = atoi(argv[1]);
+        num_of_mines = atoi(argv[1]);
     }
     srand (time(NULL));						// random seed
     // setting cursor
     x = 0;
     y = 0;
     // set all cells to 0
-    for(i = 0; i < 10; i++)
-        for(j = 0; j < 10; j++)
+    for(int i = 0; i < 10; i++)
+        for(int j = 0; j < 10; j++)
             table_array[i][j] = 0;
 
-    for(i = 0; i < nMines; i++) {
+    for(i = 0; i < num_of_mines; i++) {
         /* initialize random seed: */
 
-        r = rand() % 10;					// it generates a integer in the range 0 to 9
-        c = rand() % 10;
+        row = rand() % 10;					// it generates a integer in the range 0 to 9
+        col = rand() % 10;
 
         // put mines
-        if(table_array[r][c] != 99) {
-            table_array[r][c] = 99;
+        if(table_array[row][col] != 99) {
+            table_array[row][col] = 99;
 
             // Get position of adjacent cells of current cell
-            rows[0] = r - 1;
-            columns[0] = c + 1;
-            rows[1] = r;
-            columns[1] = c + 1;
-            rows[2] = r + 1;
-            columns[2] = c + 1;
-            rows[3] = r - 1;
-            columns[3] = c;
-            rows[4] = r + 1;
-            columns[4] = c;
-            rows[5] = r - 1;
-            columns[5] = c - 1;
-            rows[6] = r;
-            columns[6] = c - 1;
-            rows[7] = r + 1;
-            columns[7] = c - 1;
+            rows[0] = row - 1;	columns[0] = col + 1;
+            rows[1] = row;	columns[1] = col + 1;
+            rows[2] = row + 1;	columns[2] = col + 1;
+            rows[3] = row - 1;	columns[3] = col;
+            rows[4] = row + 1;	columns[4] = col;
+            rows[5] = row - 1;	columns[5] = col - 1;
+            rows[6] = row;	columns[6] = col - 1;
+            rows[7] = row + 1;	columns[7] = col - 1;
 
             for(j = 0; j < 8; j++) {
                 value = table_array[rows[j]][columns[j]];
@@ -159,13 +150,13 @@ new_game:
     }
 
     //
-    while(nMines != 0) {			// when nMines becomes 0 you will win the game
+    while(num_of_mines != 0) {			// when num_of_mines becomes 0 you will win the game
         print_table();
 
-        ch = getch();
+        key_input = getch();
         // cursor direction
         char direction;
-        switch (ch) {
+        switch (key_input) {
 
         // flag
         case 'f':
@@ -195,14 +186,14 @@ flag_mode:
 
                     if (value == 99) {				// mine case
                         table_array[y][x] += 1;
-                        nMines -= 1;				// mine found
+                        num_of_mines -= 1;				// mine found
                     } else if(value >= 0 && value <= 8) {	// number of mines case (the next cell is a mine)
                         table_array[y][x] += 20;
                     } else if(value >= 20 && value <= 28) {
                         table_array[y][x] -= 20;
                     }
 
-                    if(nMines == 0)
+                    if(num_of_mines == 0)
                         break;
                 }
             } while (direction != 'q' && direction != 'Q');
@@ -274,7 +265,7 @@ end_of_game:
     print_table();
     printf("\nGAME OVER\n");
 
-    if(nMines == 0)
+    if(num_of_mines == 0)
         printf("you won!!!!\n");
 
     else
@@ -282,11 +273,11 @@ end_of_game:
 
     do {
         printf("Are you sure to exit? (y or n)? ");
-        ch = getch();
+        key_input = getch();
         putchar('\n');
-        if(ch == 'y' || ch == 'Y') {
+        if(key_input == 'y' || key_input == 'Y') {
             break;
-        } else if(ch == 'n' || ch == 'N') {
+        } else if(key_input == 'n' || key_input == 'N') {
             goto new_game;
         }
         printf("Please answer y or n\n");
