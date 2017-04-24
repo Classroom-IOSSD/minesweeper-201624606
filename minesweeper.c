@@ -152,48 +152,41 @@ new_game:
         char direction;
         switch (key_input) {
 
-        // flag
+        /* flag */
         case 'f':
         case 'F':
-
-
 flag_mode:
-            game_mode = 1;
-            do {
-                print_table();
-                direction = getch();
-                // arrow direction
-                if(direction == '8') {
-                    // up
-                    y = (MAX + --y) % MAX;
-                } else if(direction == '2') {
-                    // down
-                    y = ++y % MAX;
-                } else if(direction == '4') {
-                    x = (MAX + --x) % MAX;
-                } else if(direction == '6') {
-                    x = ++x % MAX;
-                } else if(direction == 'c' || direction == 'C') {
-                    goto check_mode;
-                } else if(direction == '\n') {
-                    value = table_array[y][x];
-
-                    if (value == 99) {				// mine case
-                        table_array[y][x] += 1;
-                        num_of_mines -= 1;				// mine found
-                    } else if(value >= 0 && value <= 8) {	// number of mines case (the next cell is a mine)
-                        table_array[y][x] += 20;
-                    } else if(value >= 20 && value <= 28) {
-                        table_array[y][x] -= 20;
-                    }
-
-                    if(num_of_mines == 0)
-                        break;
+	game_mode = 1;
+	do {
+	    print_table();
+	    direction = getch(); // arrow direction
+	    if(direction == '8')
+		y = (MAX + --y) % MAX; // up
+	    else if(direction == '2')
+		y = ++y % MAX; // down
+	    else if(direction == '4')
+		x = (MAX + --x) % MAX;
+            else if(direction == '6')
+		x = ++x % MAX;
+            else if(direction == 'c' || direction == 'C')
+		goto check_mode;
+	    else if(direction == '\n') {
+		value = table_array[y][x];
+		if (value == 99) {
+		// mine case
+		    table_array[y][x] += 1;
+                    num_of_mines -= 1; // mine found
                 }
-            } while (direction != 'q' && direction != 'Q');
-            game_mode = 0;
-
-            break;
+		else if(value >= 0 && value <= 8) // number of mines case (the next cell is a mine)
+                    table_array[y][x] += 20;
+                else if(value >= 20 && value <= 28)
+		    table_array[y][x] -= 20;
+                if(num_of_mines == 0)
+                    break;
+	    }
+        } while (direction != 'q' && direction != 'Q');
+	game_mode = 0;
+        break;
 
         // check cell
         case 'c':
