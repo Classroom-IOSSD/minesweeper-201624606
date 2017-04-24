@@ -5,20 +5,17 @@
 #define MAX 10
 
 /* background and text color macro */
-#define COLOR_RESET  "\x1B[0m"
-#define BACKGROUND_MAGENTA  "\x1B[45m"
-#define TEXT_RED  "\x1B[31m"
-#define TEXT_GREEN  "\x1B[32m"
-#define TEXT_YELLOW  "\x1B[33m"
-#define TEXT_CYAN  "\x1B[36m"
+#define COLOR_RESET		"\x1B[0m"
+#define BACKGROUND_MAGENTA	"\x1B[45m"
+#define TEXT_RED		"\x1B[31m"
+#define TEXT_GREEN		"\x1B[32m"
+#define TEXT_YELLOW		"\x1B[33m"
+#define TEXT_CYAN		"\x1B[36m"
 
-// global variables
-// game table
-unsigned char table_array[MAX][MAX];
-// location of cursor
-int x=0, y=0;
-// flag: input mode = 0, flag mode = 1, check mode = 2
-int game_mode=0;
+/* global variables */
+unsigned char table_array[MAX][MAX]; // game table
+int x=0, y=0; // location of cursor
+int game_mode=0; // flag: input mode = 0, flag mode = 1, check mode = 2
 
 /*This is a recursive function which uncovers blank cells while they are adjacent*/
 int uncover_blank_cell(int row, int col)
@@ -31,46 +28,36 @@ int uncover_blank_cell(int row, int col)
     table_array[row][col] += 10; // uncover current cell
 
     // Get position of adjacent cells of current cell
-    rows[0] = row - 1;
-    columns[0] = col + 1;
-    rows[1] = row;
-    columns[1] = col + 1;
-    rows[2] = row + 1;
-    columns[2] = col + 1;
-    rows[3] = row - 1;
-    columns[3] = col;
-    rows[4] = row + 1;
-    columns[4] = col;
-    rows[5] = row - 1;
-    columns[5] = col - 1;
-    rows[6] = row;
-    columns[6] = col - 1;
-    rows[7] = row + 1;
-    columns[7] = col - 1;
+    rows[0] = row - 1;	columns[0] = col + 1;
+    rows[1] = row;	columns[1] = col + 1;
+    rows[2] = row + 1;	columns[2] = col + 1;
+    rows[3] = row - 1;  columns[3] = col;
+    rows[4] = row + 1;	columns[4] = col;
+    rows[5] = row - 1;	columns[5] = col - 1;
+    rows[6] = row;	columns[6] = col - 1;
+    rows[7] = row + 1;	columns[7] = col - 1;
 
     for(i = 0; i < 8; i++) {
         value = table_array[rows[i]][columns[i]];
-
-        if( (rows[i] >= 0 && rows[i] < MAX) && (columns[i] >= 0 && columns[i] < MAX) ) {	// to prevent negative index and out of bounds
+        if( (rows[i] >= 0 && rows[i] < MAX) && (columns[i] >= 0 && columns[i] < MAX) ) {
+	// to prevent negative index and out of bounds
             if(value > 0 && value <= 8)
-                table_array[rows[i]][columns[i]] += 10;										// it is a cell with 1-8 number so we need to uncover
+                table_array[rows[i]][columns[i]] += 10; 
+		// it is a cell with 1-8 number so we need to uncover
             else if(value == 0)
                 uncover_blank_cell(rows[i], columns[i]);
         }
-
     }
-
     return 1; // success!
 }
 
 void print_table()
 {
-    // clear screen
-    system("clear");
+    system("clear"); // clean screen
 
-    int i, j, value;
-    for(i = 0; i < MAX; i++) {
-        for(j = 0; j < MAX; j++) {
+    int value;
+    for(int i = 0; i < MAX; i++) {
+        for(int j = 0; j < MAX; j++) {
             if(x == j && y == i) {
                 if(game_mode == 1) {
                     printf("|%sF%s", BACKGROUND_MAGENTA, COLOR_RESET);
@@ -79,7 +66,6 @@ void print_table()
                     printf("|%sC%s", BACKGROUND_MAGENTA, COLOR_RESET);
                     continue;
                 }
-
             }
             value = table_array[i][j];
 
@@ -95,23 +81,18 @@ void print_table()
                 printf("|%sF%s", TEXT_GREEN, COLOR_RESET);
             else
                 printf("ERROR"); // test purposes
-
         }
         printf("|\n");
     }
 
     printf("cell values: 'X' unknown, '%s0%s' no mines close, '1-8' number of near mines, '%sF%s' flag in cell\n", TEXT_CYAN, COLOR_RESET, TEXT_GREEN, COLOR_RESET);
-    if(game_mode == 0) {
+    if(game_mode == 0)
         printf("f (put/remove Flag in cell), c (Check cell), n (New game), q (Exit game): ");
-    } else if(game_mode == 1) {
+    else if(game_mode == 1)
         printf("Enter (select to put/remove Flag in cell), q (Exit selection): ");
-    } else if(game_mode == 2) {
+    else if(game_mode == 2)
         printf("Enter (select to check cell), q (Exit selection): ");
-    }
-
-
 }
-
 
 int main(int argc, char *argv[])
 {
