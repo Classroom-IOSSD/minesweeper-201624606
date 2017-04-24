@@ -14,7 +14,7 @@
 
 /* global variables */
 unsigned char table_array[MAX][MAX]; // game table
-int x=0, y=0; // location of cursor
+int x = 0, y = 0; // location of cursor
 int game_mode=0; // flag: input mode = 0, flag mode = 1, check mode = 2
 
 /*This is a recursive function which uncovers blank cells while they are adjacent*/
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 {
     char key_input;
     int num_of_mines; // the number of the remaining mines
-    int row, col, value, rows[8], columns[8];
+    int i, j, row, col, value, rows[8], columns[8];
 
 new_game:
     num_of_mines = 10; // the number of mines
@@ -109,8 +109,8 @@ new_game:
     x = 0;
     y = 0;
     /* set all cells to 0 */
-    for(int i = 0; i < 10; i++)
-        for(int j = 0; j < 10; j++)
+    for(i = 0; i < 10; i++)
+        for(j = 0; j < 10; j++)
             table_array[i][j] = 0;
 
     for(i = 0; i < num_of_mines; i++) {
