@@ -188,56 +188,46 @@ flag_mode:
 	game_mode = 0;
         break;
 
-        // check cell
+        /* check cell */
         case 'c':
         case 'C':
 
 check_mode:
-            game_mode = 2;
-            do {
-                print_table();
-                direction = getch();
+	game_mode = 2;
+        do {
+            print_table();
+            direction = getch();
+            /* arrow direction */
+            if(direction == '8')
+                y = (MAX + --y) % MAX; // up
+            else if(direction == '2')
+                y = ++y % MAX; // down
+            else if(direction == '4')
+                x = (MAX + --x) % MAX;
+            else if(direction == '6')
+                x = ++x % MAX;
+            else if(direction == 'f' || direction == 'F')
+                goto flag_mode;
+            else if(direction == '\n') {
+                value = table_array[y][x];
+                if(value == 0) // blank case
+                    uncover_blank_cell(y, x);
+                else if(value == 99) // mine case
+                    goto end_of_game;
+                else if(value > 0 && value <= 8) // number case (the next cell is a mine)
+                    table_array[y][x] += 10;
+            }
+	} while (direction != 'q' && direction != 'Q');
+	game_mode = 0;
+	break;
 
-                // arrow direction
-                if(direction == '8') {
-                    // up
-                    y = (MAX + --y) % MAX;
-                } else if(direction == '2') {
-                    // down
-                    y = ++y % MAX;
-                } else if(direction == '4') {
-                    x = (MAX + --x) % MAX;
-                } else if(direction == '6') {
-                    x = ++x % MAX;
-                } else if(direction == 'f' || direction == 'F') {
-                    goto flag_mode;
-                }
-
-                else if(direction == '\n') {
-                    value = table_array[y][x];
-                    if(value == 0)						// blank case
-                        uncover_blank_cell(y, x);
-                    else if(value == 99)				// mine case
-                        goto end_of_game;
-                    else if(value > 0 && value <= 8)	// number case (the next cell is a mine)
-                        table_array[y][x] += 10;
-
-                    //	break;
-                }
-            } while (direction != 'q' && direction != 'Q');
-            game_mode = 0;
-
-            break;
-
-
-
-        // jump to a new game
+        /* jump to a new game */
         case 'n':
         case 'N':
             goto new_game;
             break;
 
-        // exit
+        /* exit */
         case 'q':
         case 'Q':
             goto end_of_game;
