@@ -4,24 +4,13 @@
 #include "conio.h"
 #define MAX 10
 
-// background color
-#define KNRM  "\x1B[0m"
-#define BRED  "\x1B[41m"
-#define BGRN  "\x1B[42m"
-#define BYEL  "\x1B[43m"
-#define BBLU  "\x1B[44m"
-#define BMAG  "\x1B[45m"
-#define BCYN  "\x1B[46m"
-#define BWHT  "\x1B[47m"
-// text color
-#define KRED  "\x1B[31m"
-#define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KBLU  "\x1B[34m"
-#define KMAG  "\x1B[35m"
-#define KCYN  "\x1B[36m"
-#define KWHT  "\x1B[37m"
-
+/* background and text color macro */
+#define COLOR_RESET  "\x1B[0m"
+#define BACKGROUND_MAGENTA  "\x1B[45m"
+#define TEXT_RED  "\x1B[31m"
+#define TEXT_GREEN  "\x1B[32m"
+#define TEXT_YELLOW  "\x1B[33m"
+#define TEXT_CYAN  "\x1B[36m"
 
 // global variables
 // game table
@@ -84,10 +73,10 @@ void print_table()
         for(j = 0; j < MAX; j++) {
             if(x == j && y == i) {
                 if(game_mode == 1) {
-                    printf("|%sF%s",BMAG,KNRM);
+                    printf("|%sF%s", BACKGROUND_MAGENTA, COLOR_RESET);
                     continue;
                 } else if(game_mode == 2) {
-                    printf("|%sC%s",BMAG,KNRM);
+                    printf("|%sC%s", BACKGROUND_MAGENTA, COLOR_RESET);
                     continue;
                 }
 
@@ -97,13 +86,13 @@ void print_table()
             if((value >= 0 && value <= 8) || value == 0 || value == 99)
                 printf("|X");
             else if(value == 10) // clean area
-                printf("|%s%d%s",KCYN, value - 10,KNRM);
+                printf("|%s%d%s", TEXT_CYAN, value - 10, COLOR_RESET);
             else if(value == 11) // the number of near mine is 1
-                printf("|%s%d%s",KYEL, value - 10,KNRM);
+                printf("|%s%d%s", TEXT_YELLOW, value - 10, COLOR_RESET);
             else if(value > 11 && value <= 18) // the number of near mine is greater than 1
-                printf("|%s%d%s",KRED, value - 10,KNRM);
+                printf("|%s%d%s", TEXT_RED, value - 10, COLOR_RESET);
             else if((value >= 20 && value <= 28) || value == 100)
-                printf("|%sF%s",KGRN,KNRM);
+                printf("|%sF%s", TEXT_GREEN, COLOR_RESET);
             else
                 printf("ERROR"); // test purposes
 
@@ -111,7 +100,7 @@ void print_table()
         printf("|\n");
     }
 
-    printf("cell values: 'X' unknown, '%s0%s' no mines close, '1-8' number of near mines, '%sF%s' flag in cell\n",KCYN,KNRM,KGRN,KNRM);
+    printf("cell values: 'X' unknown, '%s0%s' no mines close, '1-8' number of near mines, '%sF%s' flag in cell\n", TEXT_CYAN, COLOR_RESET, TEXT_GREEN, COLOR_RESET);
     if(game_mode == 0) {
         printf("f (put/remove Flag in cell), c (Check cell), n (New game), q (Exit game): ");
     } else if(game_mode == 1) {
